@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Comments from './Comments'
 import NewComment from './NewComment';
 import Login from './Login';
+import SignUp from './SignUp'
 import User from './User';
 
 class App extends Component {
@@ -12,7 +13,10 @@ class App extends Component {
     isAuth: false,
     isAuthError: false,
     authError: '',
-    user: {}
+    isSignUpError: false,
+    signUpError: '',
+    user: {},
+    userScreen: 'login'
   }
 
   componentDidMount() {
@@ -43,6 +47,16 @@ class App extends Component {
     }
   }
 
+  createAccount = async (email, passwd) => {
+    const { auth } = this.props;
+    this.setState({ signUpError: '', isSignUpError: false })
+    try {
+      await auth.createUserWithEmailAndPassword(email, passwd);
+    } catch(err) {
+      this.setState({ signUpError: err.code, isSignUpError: true })
+    }
+  }
+
   sendComment = comment => {
     const { database } = this.props;
     const { user } = this.state;
@@ -62,14 +76,35 @@ class App extends Component {
     auth.signOut()
   }
 
+  changeScreen = screen => {
+    this.setState({ userScreen: screen });
+  }
+
   render() {
 
-    const { isAuth, isAuthError, isLoading, comments, authError, user } = this.state
+    const { 
+      isAuth, 
+      isAuthError, 
+      isLoading, 
+      comments, 
+      authError, 
+      user, 
+      isSignUpError, 
+      signUpError
+    } = this.state
 
     return (
       <div>
           { isAuth && <User email={user.email} logout={this.logout}/>}
-          { !isAuth && <Login login={this.login} isAuthError={isAuthError} authError={authError}/> }
+          { !isAuth
+              && this.state.userScreen === 'login' && 
+              <Login login={this.login} isAuthError={isAuthError} authError={authError} changeScreen={this.changeScreen}/> 
+          }
+          { !isAuth
+            && this.state.userScreen === 'signup' && 
+            <SignUp createAccount={this.createAccount} isSignUpError={isSignUpError} signUpError={signUpError} changeScreen={this.changeScreen}/> 
+        }
+
           { this.state.isAuth && <NewComment sendComment={this.sendComment}/> } 
           <Comments comments={comments} />
           { isLoading && <p>Carregando...</p> }
