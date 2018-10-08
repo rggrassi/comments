@@ -4,11 +4,14 @@ const Comment = ({ c }) =>  {
 
     const email = c.email;
     return (
-        <div>
-            {c.comment} 
-            <br />
-            Enviado por: {email || ''}
-            <hr />
+        <div className='card mt-2'>
+            <div className='card-body'>
+                {c.comment} 
+                <br />
+                <span className='text-muted'>
+                    Enviado por: {email || ''}
+                </span>
+            </div>
         </div>
     )
 }

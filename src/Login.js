@@ -27,15 +27,22 @@ class Login extends Component {
         
         return (
             <div>
-                <h2>Login</h2>
-                <input type="text" onChange={this.handleChange("email")} placeholder="e-mail"/>
-                <input type="password" onChange={this.handleChange("passwd")} placeholder="senha"/>
-                <button type="button" onClick={this.login}>Login</button>
-                { isAuthError && <p>
-                    <b>Erro:</b> { errorMessages[authError] } 
-                  </p> 
-                }
-                <button onClick={() => this.props.changeScreen('signup')}>Criar conta</button>
+                <h3>Entre para comentar:</h3>
+                <form className='form-inline'>
+                    <input className='form-control mr-2' type="text" onChange={this.handleChange("email")} placeholder="e-mail"/>
+                    <input className='form-control mr-1' type="password" onChange={this.handleChange("passwd")} placeholder="senha"/>
+                    <button className='btn btn-primary mr-1' type="button" onClick={this.login}>Login</button>
+                    <button className='btn' onClick={() => this.props.changeScreen('signup')}>Criar conta</button>
+                    </form>
+                    { 
+                        isAuthError && 
+                            <div className='card text-white bg-danger mt-3'>
+                                <div className='card-header'>Erro ao entrar</div>
+                                <div className='card-body'>
+                                    { errorMessages[authError] } 
+                                </div>
+                            </div> 
+                    }
             </div>
         )
     }
