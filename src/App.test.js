@@ -15,9 +15,13 @@ describe('<App />', () => {
       on: jest.fn()
     })
 
-    const wrapper = shallow(<App database={database}/>);
+    const auth = {
+      onAuthStateChanged: jest.fn()
+    }
+
+    const wrapper = shallow(<App database={database} auth={auth}/>);
     expect(wrapper.find(Comments).length).toBe(1);
-    expect(wrapper.find(NewComment).length).toBe(1);
+    expect(wrapper.find(NewComment).length).toBe(0);
     expect(wrapper.find('p').length).toBe(1);
   });
 
@@ -43,8 +47,12 @@ describe('<App />', () => {
     push.mockReturnValue({
       key: '1'
     })
-    
-    const wrapper = shallow(<App database={database}/>);
+
+    const auth = {
+      onAuthStateChanged: jest.fn()
+    }    
+
+    const wrapper = shallow(<App database={database} auth={auth}/>);
     wrapper.instance().sendComment('new comment');
     expect(child).toBeCalledWith('comments');
     expect(update).toBeCalledWith({
@@ -62,10 +70,14 @@ describe('<App />', () => {
     const eventEmitter = new EventEmitter();
     database.ref.mockReturnValue(eventEmitter);
 
+    const auth = {
+      onAuthStateChanged: jest.fn()
+    }    
+
     // nao recebeu comments
-    const wrapper = shallow(<App database={database}/>);
+    const wrapper = shallow(<App database={database} auth={auth}/>);
     expect(wrapper.find(Comments).length).toBe(1);
-    expect(wrapper.find(NewComment).length).toBe(1);
+    expect(wrapper.find(NewComment).length).toBe(0);
     expect(wrapper.find('p').length).toBe(1);   
 
 
@@ -86,6 +98,5 @@ describe('<App />', () => {
     expect(wrapper.state().comments).toBe(comments);
     expect(wrapper.find(Comments).get(0).props.comments).toBe(comments);
     expect(wrapper.find('p').length).toBe(0);
-    expect(wrapper.find(NewComment).get(0).props.sendComment).toBe(wrapper.instance().sendComment)
   })  
 })

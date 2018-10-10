@@ -9,7 +9,7 @@ const Comment = ({ c }) =>  {
                 {c.comment} 
                 <br />
                 <span className='text-muted'>
-                    Enviado por: {email || ''}
+                    {email || ''}
                 </span>
             </div>
         </div>
