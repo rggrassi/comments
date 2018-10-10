@@ -17,9 +17,11 @@ class NewComment extends Component {
     
     render() {
         return (
-            <div>
-                <textarea value={this.state.newComment} onChange={this.handleChange}></textarea>
-                <button onClick={this.sendComment}>Enviar</button>  
+            <div className='row mt-2 mb-3' >
+                <div className='col-md-12'>
+                    <textarea className='form-control mb-2' value={this.state.newComment} onChange={this.handleChange}></textarea>
+                    <button className='btn btn-primary' onClick={this.sendComment}>Enviar</button>  
+                </div>
             </div>
         )
     }
